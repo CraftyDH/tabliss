@@ -18,7 +18,25 @@ const SearchSettings: FC<Props> = ({ data = defaultData, setData }) => (
             {name}
           </option>
         ))}
+        <option key="custom" value="custom">
+          Custom
+        </option>
       </select>
+      {data.searchEngine === "custom" && (
+        <label>
+          Example: {'https://www.google.com/search?q={searchTerms}'}
+          <input
+            type="url"
+            value={data.customSearchEngine}
+            onChange={event =>
+              setData({
+                ...data,
+                customSearchEngine: String(event.target.value),
+              })
+          }
+          />
+        </label>
+      )}
     </label>
 
     {process.env.BUILD_TARGET !== 'firefox' && (
@@ -40,8 +58,27 @@ const SearchSettings: FC<Props> = ({ data = defaultData, setData }) => (
                 {name}
               </option>
             ))}
+          <option key="custom" value="custom">
+            Custom
+          </option>
         </select>
       </label>
+    )}
+
+    {data.suggestionsEngine === "custom" && (
+        <label>
+          Example: {'https://www.google.com/complete/search?client=chrome&q={searchTerms}&callback={callback}'}
+          <input
+            type="url"
+            value={data.customSuggestionsEngine}
+            onChange={event =>
+              setData({
+                ...data,
+                customSuggestionsEngine: String(event.target.value),
+              })
+          }
+          />
+        </label>
     )}
 
     {data.suggestionsEngine && (

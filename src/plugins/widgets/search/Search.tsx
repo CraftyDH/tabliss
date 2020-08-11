@@ -30,7 +30,7 @@ const Search: FC<Props> = ({ data = defaultData }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     previousValue.current = event.target.value;
 
-    const suggestUrl = getSuggestUrl(data.suggestionsEngine);
+    const suggestUrl = (data.suggestionsEngine === 'custom') ? data.customSuggestionsEngine! : getSuggestUrl(data.suggestionsEngine);
     if (suggestUrl) {
       getSuggestions(event.target.value, suggestUrl).then(suggestions => {
         setSuggestions(suggestions.slice(0, data.suggestionsQuantity));
@@ -84,8 +84,10 @@ const Search: FC<Props> = ({ data = defaultData }) => {
   };
 
   const search = () => {
+    const engineUrl = (data.searchEngine === 'custom') ? data.customSearchEngine! : getSearchUrl(data.searchEngine);
+
     document.location.assign(
-      buildUrl(searchInput.current!.value, getSearchUrl(data.searchEngine)),
+      buildUrl(searchInput.current!.value, engineUrl),
     );
   };
 
